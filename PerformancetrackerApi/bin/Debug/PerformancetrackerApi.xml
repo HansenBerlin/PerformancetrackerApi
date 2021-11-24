@@ -1,0 +1,63 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>PerformancetrackerApi</name>
+    </assembly>
+    <members>
+        <member name="M:PerformancetrackerApi.Controllers.GradesController.GetStudentsGradesInCourse(System.String,System.Int32,System.Int32)">
+             <summary>
+             Gets a list of all grades of a specific student in a specific course.
+             </summary>
+             <remarks>
+             Sample response:
+            
+                 [
+                   {
+                     "value": 1,
+                     "dueDate": "2021-10-01T00:00:00",
+                     "commitDate": "2021-10-02T11:11:00",
+                     "fixed": false,
+                     "type": "Klausur"
+                   },
+                   {
+                     "value": 2.3,
+                     "dueDate": "2021-11-01T00:00:00",
+                     "commitDate": "2021-11-01T23:59:00",
+                     "fixed": false,
+                     "type": "Arbeitsblatt"
+                   }
+                 ]
+             A header containing a valid API Key payload must be included.
+             </remarks>
+             <param name="matNr">Student Matrikelnummer (ID)</param>
+             <param name="kursNr">Kurs ID</param>
+             <returns>a list of grades</returns>
+        </member>
+        <member name="M:PerformancetrackerApi.Controllers.StudentsController.GetStudents(System.String,System.Int32)">
+             <summary>
+             Gets a list of all students in a specific course.
+             </summary>
+             <remarks>
+             Sample response:
+            
+                 [
+                     {
+                         "matNr": 323334,
+                         "mail": "stud.rocky.balboa@hwr.de",
+                         "firstName": "Rocky",
+                         "lastName": "Balboa"
+                     },
+                     {
+                         "matNr": 353637,
+                         "mail": "stud.vito.corleone@hwr.de",
+                         "firstName": "Vito",
+                         "lastName": "Corleone"
+                     }
+                 ]
+            
+             </remarks>
+             <param name="kursId">Course ID to search in</param>
+             <returns>a list of students</returns>
+        </member>
+    </members>
+</doc>
