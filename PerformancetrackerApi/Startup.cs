@@ -36,19 +36,13 @@ namespace PerformancetrackerApi
                 c.SwaggerDoc("v1", new OpenApiInfo
                 {
                     Version = "v1",
-                    Title = "The .NET Lab API",
-                    Description = "An imaginary API of my blog",
-                    TermsOfService = new Uri("https://blog.georgekosmidis.net/privacy-policy/"),
+                    Title = "Performance Tracker API",
+                    Description = "HWR students project for tracking your performance. Please ask for API key via the provided contact.",
                     Contact = new OpenApiContact
                     {
-                        Name = "George Kosmidis",
-                        Email = string.Empty,
-                        Url = new Uri("https://georgekosmidis.net"),
-                    },
-                    License = new OpenApiLicense
-                    {
-                        Name = "Use under MIT",
-                        Url = new Uri("https://blog.georgekosmidis.net/privacy-policy/"),
+                        Name = "Hannes",
+                        Email = "hannes@bonogames.de",
+                        Url = new Uri("https://github.com/HansenBerlin/PerformancetrackerApi"),
                     }
                 });
                 var xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
@@ -72,6 +66,8 @@ namespace PerformancetrackerApi
             app.UseRouting();
             app.UseAuthorization();
             app.UseEndpoints(endpoints => { endpoints.MapControllers(); });
+            var ukCulture = Configuration["Culture"];
+            app.UseRequestLocalization(ukCulture);
         }
     }
 }

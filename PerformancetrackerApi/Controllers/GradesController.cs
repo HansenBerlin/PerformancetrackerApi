@@ -2,12 +2,14 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
+using System.Net.Mime;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using PerformancetrackerApi.Attributes;
+using PerformancetrackerApi.Entities;
 using PerformancetrackerApi.Interfaces;
 
 namespace PerformancetrackerApi.Controllers
@@ -53,12 +55,26 @@ namespace PerformancetrackerApi.Controllers
         /// <param name="kursNr">Kurs ID</param>
         /// <returns>a list of grades</returns>
         [HttpGet("{matNr}/{kursNr}", Name = "Noten für Student in Kurs")]
-        public async Task<IActionResult> GetStudentsGradesInCourse([FromHeader(Name="ApiKey")][Required] string requiredHeader, int matNr, int kursNr)
+        public async Task<IActionResult> GetStudentsGradesInCourse([FromHeader(Name="ApiKey")][Required] string apiKey, int matNr, int kursNr)
         {
             var grades = await _gradesRepo.GetGradesPerStudentInCourse(matNr, kursNr);
             if (grades == null)
                 return BadRequest();
             return Ok(grades);
+        }
+        
+        //[Consumes(MediaTypeNames.Application.Json)]
+        [HttpPut("update/{gradeId:int}/{gradeValue:double}", Name = "UpdateGradeForStudent")]
+        public async Task<IActionResult> Put([FromHeader(Name="ApiKey")][Required] string apiKey, int gradeId, double gradeValue)
+        {
+            if (gradeValue is < 1 or > 5)
+            {
+                return BadRequest();
+            }
+            var success = await _gradesRepo.UpdateGrade(gradeId, gradeValue);
+            if (success)
+                return Ok();
+            return BadRequest();
         }
     }
 }

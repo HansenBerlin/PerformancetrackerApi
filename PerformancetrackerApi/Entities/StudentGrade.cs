@@ -7,5 +7,6 @@ namespace PerformancetrackerApi.Entities
         public double Value { get; set; }
         public DateTime CommitDate { get; set; }
         public bool Fixed { get; set; }
+        public int Id { get; set; }
     }
 }
