@@ -38,7 +38,8 @@ namespace PerformancetrackerApi.Repository
             string query =
                 $"UPDATE leistung " +
                 $"SET wert = {value.ToString("0.0", CultureInfo.InvariantCulture)} " +
-                $"WHERE id = {gradeId}";
+                $"WHERE id = {gradeId}; " +
+                $"COMMIT;";
             await using var connection = context.Connection;
             //var response = await connection.QueryAsync<>(query);
             try

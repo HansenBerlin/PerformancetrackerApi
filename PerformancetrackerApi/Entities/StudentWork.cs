@@ -2,9 +2,8 @@
 
 namespace PerformancetrackerApi.Entities
 {
-    public class StudentWork
+    public class StudentWork : WorkCategory
     {
         public DateTime DueDate { get; set; }
-        public string WorkType { get; set; }
     }
 }

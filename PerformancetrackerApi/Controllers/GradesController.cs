@@ -63,15 +63,13 @@ namespace PerformancetrackerApi.Controllers
             return Ok(grades);
         }
         
-        //[Consumes(MediaTypeNames.Application.Json)]
-        [HttpPut("update/{gradeId:int}/{gradeValue:double}", Name = "UpdateGradeForStudent")]
-        public async Task<IActionResult> Put([FromHeader(Name="ApiKey")][Required] string apiKey, int gradeId, double gradeValue)
+        [Consumes(MediaTypeNames.Application.Json)]
+        [HttpPut("{id:int}", Name = "UpdateGradeForStudent")]
+        public async Task<IActionResult> Put([FromHeader(Name="ApiKey")][Required] string apiKey, int id, [FromBody]StudentGrade grade)
         {
-            if (gradeValue is < 1 or > 5)
-            {
-                return BadRequest();
-            }
-            var success = await _gradesRepo.UpdateGrade(gradeId, gradeValue);
+            if (id != grade.Id)
+                return BadRequest("Grade ID mismatch");
+            var success = await _gradesRepo.UpdateGrade(grade.Id, grade.Value);
             if (success)
                 return Ok();
             return BadRequest();

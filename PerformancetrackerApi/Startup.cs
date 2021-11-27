@@ -28,6 +28,7 @@ namespace PerformancetrackerApi
             services.AddScoped<IStudentRepository, StudentRepository>();
             services.AddScoped<IGradesRepository, GradesRepository>();
             services.AddScoped<IDueDatesRepository, DueDatesRepository>();
+            services.AddScoped<ICourseRepository, CourseRepository>();
             services.AddControllers();
             services.AddSwaggerGen(c =>
             {

@@ -2,6 +2,7 @@
 using System.Linq;
 using System.Threading.Tasks;
 using Dapper;
+using Microsoft.AspNetCore.Mvc;
 using PerformancetrackerApi.Context;
 using PerformancetrackerApi.Entities;
 using PerformancetrackerApi.Interfaces;
@@ -37,13 +38,13 @@ namespace PerformancetrackerApi.Repository
         public async Task<IEnumerable<ParticipationWork>> GetParticipationWorks(int matNr, int courseId)
         {
             string query = null;
-            if (matNr == 0 && courseId == 0)
+            if (matNr == -1 && courseId == -1)
                 query = $"SELECT vorname FirstName, nachname LastName, nachweis Link, bezeichnung Description, zeitpunkt CommitDate " +
                         $"FROM aktive_mitarbeit_von_studenten;";
-            else if (matNr != 0 && courseId == 0)
+            else if (matNr != -1 && courseId == -1)
                 query = $"SELECT vorname FirstName, nachname LastName, nachweis Link, bezeichnung Description, zeitpunkt CommitDate " +
                         $"FROM aktive_mitarbeit_von_studenten WHERE matNr = {matNr};";
-            else if (matNr == 0 && courseId != 0)
+            else if (matNr == -1 && courseId != -1)
                 query = $"SELECT vorname FirstName, nachname LastName, nachweis Link, bezeichnung Description, zeitpunkt CommitDate " +
                         $"FROM aktive_mitarbeit_von_studenten WHERE fk_kurs = {courseId};";
             else
@@ -55,7 +56,15 @@ namespace PerformancetrackerApi.Repository
             return response.ToList();
         }
         
-        
+        public async Task<IEnumerable<LatedaysLeft>> GetLeftLateDaysForAllWorkCategories(int courseId, int matNr)
+        {
+            string query = $"call berechne_latedays({courseId}, {matNr});";
+            await using var connection = context.Connection;
+            var response = await connection.QueryAsync<LatedaysLeft>(query);
+            return response.ToList();
+        }
+
+
 
     }
 }
