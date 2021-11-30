@@ -18,22 +18,7 @@ namespace PerformancetrackerApi.Repository
             this.context = context;
         }
 
-        public async Task<IEnumerable<StudentWork>> GetDueDatesForStudentInCourse(int matNr, int courseId)
-        {
-            string query =
-                $"SELECT frist DueDate, fk_leistungstyp Worktype " +
-                $"FROM abgabe_in_kurs a " +
-                $"INNER JOIN leistung_template lt ON a.fk_leistung_template = lt.id " +
-                $"WHERE a.id " +
-                $"NOT IN (" +
-                $"SELECT fk_abgabe_in_kurs " +
-                $"FROM leistung " +
-                $"WHERE fk_matnr = {matNr}) " +
-                $"AND fk_kurs = {courseId};";
-            await using var connection = context.Connection;
-            var response = await connection.QueryAsync<StudentWork>(query);
-            return response.ToList();
-        }
+        
         
         public async Task<IEnumerable<ParticipationWork>> GetParticipationWorks(int matNr, int courseId)
         {

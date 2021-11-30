@@ -14,18 +14,30 @@ namespace PerformancetrackerApi.Controllers
     public class WorksController : ControllerBase
     {
         private readonly IDueDatesRepository _dueDatesRepository;
+        private readonly IWorksRepository _worksRepository;
         
-        public WorksController(IDueDatesRepository dueDatesRepository)
+        public WorksController(IDueDatesRepository dueDatesRepository, IWorksRepository worksRepository)
         {
             _dueDatesRepository = dueDatesRepository;
+            _worksRepository = worksRepository;
         }
         
        
-        [HttpGet("notcommited/{matNr}/{kursId}", Name = "Noch nicht eingereichte Leistungen Student/Kurs")]
-        public async Task<IActionResult> GetStudentsGrades([
+        [HttpGet("commited/{matNr}/{kursId}", Name = "Eingereichte Leistungen Student/Kurs")]
+        public async Task<IActionResult> GetStudentCommitedWorks([
             FromHeader(Name="ApiKey")][Required] string requiredHeader, int matNr, int kursId)
         {
-            var works = await _dueDatesRepository.GetDueDatesForStudentInCourse(matNr, kursId);
+            var works = await _worksRepository.GetCommitedWorksForStudentInCourse(matNr, kursId);
+            if (works == null)
+                return BadRequest();
+            return Ok(works);
+        }
+        
+        [HttpGet("uncommited/{matNr}/{kursId}", Name = "Nicht eingereichte Leistungen Student/Kurs")]
+        public async Task<IActionResult> GetStudentUncommitedWorks([
+            FromHeader(Name="ApiKey")][Required] string requiredHeader, int matNr, int kursId)
+        {
+            var works = await _worksRepository.GetUncommitedWorksForStudentInCourse(matNr, kursId);
             if (works == null)
                 return BadRequest();
             return Ok(works);

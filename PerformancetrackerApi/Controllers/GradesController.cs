@@ -54,22 +54,32 @@ namespace PerformancetrackerApi.Controllers
         /// <param name="matNr">Student Matrikelnummer (ID)</param>
         /// <param name="kursNr">Kurs ID</param>
         /// <returns>a list of grades</returns>
-        [HttpGet("{matNr}/{kursNr}", Name = "Noten für Student in Kurs")]
-        public async Task<IActionResult> GetStudentsGradesInCourse([FromHeader(Name="ApiKey")][Required] string apiKey, int matNr, int kursNr)
-        {
-            var grades = await _gradesRepo.GetGradesPerStudentInCourse(matNr, kursNr);
-            if (grades == null)
-                return BadRequest();
-            return Ok(grades);
-        }
+        //[HttpGet("{matNr}/{kursNr}", Name = "Noten für Student in Kurs")]
+        //public async Task<IActionResult> GetStudentsGradesInCourse([FromHeader(Name="ApiKey")][Required] string apiKey, int matNr, int kursNr)
+        //{
+        //    var grades = await _gradesRepo.GetGradesPerStudentInCourse(matNr, kursNr);
+        //    if (grades == null)
+        //        return BadRequest();
+        //    return Ok(grades);
+        //}
         
         [Consumes(MediaTypeNames.Application.Json)]
-        [HttpPut("{id:int}", Name = "UpdateGradeForStudent")]
-        public async Task<IActionResult> Put([FromHeader(Name="ApiKey")][Required] string apiKey, int id, [FromBody]StudentGrade grade)
+        [HttpPut("{gradeId:int}", Name = "UpdateGradeForStudent")]
+        public async Task<IActionResult> Put([FromHeader(Name="ApiKey")][Required] string apiKey, int gradeId, [FromBody]StudentWork grade)
         {
-            if (id != grade.Id)
+            if (gradeId != grade.Id)
                 return BadRequest("Grade ID mismatch");
-            var success = await _gradesRepo.UpdateGrade(grade.Id, grade.Value);
+            var success = await _gradesRepo.UpdateGrade(grade.Id, grade.Grade);
+            if (success)
+                return Ok();
+            return BadRequest();
+        }
+        
+        //[Consumes(MediaTypeNames.Application.Json)]
+        [HttpPost("/add/{matNr}", Name = "Insert Grade for Student")]
+        public async Task<IActionResult> PostNewGrade([FromHeader(Name="ApiKey")][Required] string apiKey, int matNr, [FromBody]StudentWork grade)
+        {
+            var success = await _gradesRepo.InsertGrade(grade, matNr);
             if (success)
                 return Ok();
             return BadRequest();

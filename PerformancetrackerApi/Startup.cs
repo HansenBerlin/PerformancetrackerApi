@@ -8,6 +8,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
 using PerformancetrackerApi.Context;
+using PerformancetrackerApi.Entities;
 using PerformancetrackerApi.Interfaces;
 using PerformancetrackerApi.Repository;
 
@@ -29,6 +30,8 @@ namespace PerformancetrackerApi
             services.AddScoped<IGradesRepository, GradesRepository>();
             services.AddScoped<IDueDatesRepository, DueDatesRepository>();
             services.AddScoped<ICourseRepository, CourseRepository>();
+            services.AddScoped<IWorksRepository, WorksRepository>();
+            services.AddScoped<IDashboardRepository, DashboardRepository>();
             services.AddControllers();
             services.AddSwaggerGen(c =>
             {

@@ -2,7 +2,7 @@
 
 namespace PerformancetrackerApi.Entities
 {
-    public class StudentGrade : StudentWork
+    public class StudentGrade
     {
         public double Value { get; set; }
         public DateTime CommitDate { get; set; }
